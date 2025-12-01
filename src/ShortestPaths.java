@@ -1,4 +1,6 @@
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.io.File;
@@ -25,11 +27,22 @@ public class ShortestPaths {
      * PathData record, storing total distance from the source, and the
      * back pointer to the previous node on the shortest path.
      * Precondition: origin is a node in the Graph.*/
-    public void compute(Node origin) {
-        paths = new HashMap<Node,PathData>();
+    public void compute(Node origin) {        
+        PriorityQueue<Node> pQueue = new PriorityQueue<>(
+            (Node a, Node b) -> (int) (distances.get(a.getId()) - distances.get(b.getId())));
 
-        // TODO 1: implement Dijkstra's algorithm to fill paths with
-        // shortest-path data for each Node reachable from origin.
+        distances.put(origin.getId(), (double) 0);
+        pQueue.add(origin);
+        Node current = null;
+        
+        do {
+            current = pQueue.poll();
+            HashMap<Node, Double> neighbors = current.getNeighbors();
+            for (Node x : neighbors.keySet()) {
+            }
+            
+
+        } while (pQueue.size() > 0);
 
     }
 
