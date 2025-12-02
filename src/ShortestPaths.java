@@ -150,12 +150,22 @@ public class ShortestPaths {
       graph.report();
 
 
-      // TODO 4: create a ShortestPaths object, use it to compute shortest
-      // paths data from the origin node given by origCode.
-
+      ShortestPaths sPaths = new ShortestPaths();
+      Node origin = graph.getNode(SidewalkOrigCode);
+      sPaths.compute(origin);
+      if (SidewalkDestCode == null) {
       // TODO 5:
       // If destCode was not given, print each reachable node followed by the
       // length of the shortest path to it from the origin.
+
+      } else {
+        Node dest = graph.getNode(SidewalkDestCode);
+        System.out.println();
+        for (Node node : sPaths.shortestPath(dest)) {
+            System.out.printf("Node %s -> ", node.getId());
+        }
+        System.out.printf("\nPath length: %s\n", sPaths.shortestPathLength(dest));
+      }
 
       // TODO 6:
       // If destCode was given, print the nodes in the path from
