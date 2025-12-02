@@ -2,6 +2,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -27,20 +28,38 @@ public class ShortestPaths {
      * PathData record, storing total distance from the source, and the
      * back pointer to the previous node on the shortest path.
      * Precondition: origin is a node in the Graph.*/
-    public void compute(Node origin) {        
+    public void compute(Node origin) {
         PriorityQueue<Node> pQueue = new PriorityQueue<>(
-            (Node a, Node b) -> (int) (distances.get(a.getId()) - distances.get(b.getId())));
+            (Node a, Node b) -> (int) (paths.get(a).distance - paths.get(b).distance));
 
-        distances.put(origin.getId(), (double) 0);
+        paths.put(origin, new PathData((double) 0, null));
         pQueue.add(origin);
         Node current = null;
-        
+        HashSet<Node> visited = new HashSet<>();
+
         do {
             current = pQueue.poll();
-            HashMap<Node, Double> neighbors = current.getNeighbors();
-            for (Node x : neighbors.keySet()) {
+            if (visited.contains(current)) {
+                continue;
             }
-            
+
+            HashMap<Node, Double> neighbors = current.getNeighbors();
+
+            for (Node x : neighbors.keySet()) {
+                if (paths.containsKey(x)) {
+                    double temp = paths.get(current).distance + neighbors.get(x);
+
+                    if (temp < paths.get(x).distance) {
+                        paths.put(x, new PathData(temp, current));
+                    }
+                    continue;
+                }
+                else {
+                    paths.put(x, new PathData(neighbors.get(x), current));
+                    pQueue.add(x);
+                }
+            }
+            visited.add(current);
 
         } while (pQueue.size() > 0);
 
