@@ -29,16 +29,16 @@ public class ShortestPaths {
      * back pointer to the previous node on the shortest path.
      * Precondition: origin is a node in the Graph.*/
     public void compute(Node origin) {
+        this.paths = new HashMap<>();
         PriorityQueue<Node> pQueue = new PriorityQueue<>(
             (Node a, Node b) -> (int) (paths.get(a).distance - paths.get(b).distance));
 
         paths.put(origin, new PathData((double) 0, null));
         pQueue.add(origin);
-        Node current = null;
         HashSet<Node> visited = new HashSet<>();
 
         do {
-            current = pQueue.poll();
+            Node current = pQueue.poll();
             if (visited.contains(current)) {
                 continue;
             }
@@ -70,9 +70,7 @@ public class ShortestPaths {
      * Precondition: destination is a node in the graph, and compute(origin)
      * has been called. */
     public double shortestPathLength(Node destination) {
-        // TODO 2 - implement this method to fetch the shortest path length
-        // from the paths data computed by Dijkstra's algorithm.
-        throw new UnsupportedOperationException();
+        return paths.get(destination).distance;
     }
 
     /** Returns a LinkedList of the nodes along the shortest path from origin
@@ -82,10 +80,14 @@ public class ShortestPaths {
      * Precondition: destination is a node in the graph, and compute(origin)
      * has been called. */
     public LinkedList<Node> shortestPath(Node destination) {
-        // TODO 3 - implement this method to reconstruct sequence of Nodes
-        // along the shortest path from the origin to destination using the
-        // paths data computed by Dijkstra's algorithm.
-        throw new UnsupportedOperationException();
+        Node current = destination;
+        LinkedList<Node> path = new LinkedList<>();
+
+        while (current != null) {
+            path.addFirst(current);
+            current = paths.get(current).previous;
+        }
+        return path;
     }
 
 
