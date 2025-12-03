@@ -62,7 +62,6 @@ public class ShortestPaths {
             visited.add(current);
 
         } while (pQueue.size() > 0);
-
     }
 
     /** Returns the length of the shortest path from the origin to destination.
@@ -70,7 +69,10 @@ public class ShortestPaths {
      * Precondition: destination is a node in the graph, and compute(origin)
      * has been called. */
     public double shortestPathLength(Node destination) {
-        return paths.get(destination).distance;
+        if (paths.containsKey(destination)) {
+            return paths.get(destination).distance;
+        }
+        return Double.POSITIVE_INFINITY;
     }
 
     /** Returns a LinkedList of the nodes along the shortest path from origin
@@ -80,6 +82,10 @@ public class ShortestPaths {
      * Precondition: destination is a node in the graph, and compute(origin)
      * has been called. */
     public LinkedList<Node> shortestPath(Node destination) {
+        if (!paths.containsKey(destination)) {
+            return null;
+        }
+        
         Node current = destination;
         LinkedList<Node> path = new LinkedList<>();
 
