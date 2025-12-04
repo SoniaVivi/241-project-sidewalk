@@ -171,12 +171,16 @@ public class ShortestPaths {
       } else {
         Node dest = graph.getNode(SidewalkDestCode);
         System.out.println();
-        for (Node node : sPaths.shortestPath(dest)) {
-            System.out.printf("Node %s -> ", node.getId());
-        }
-        System.out.printf("\nPath length: %s\n", sPaths.shortestPathLength(dest));
-      }
+        LinkedList<Node> chain = sPaths.shortestPath(dest);
+        if (chain == null) {
+            System.out.println("No path exists");
+        } else {
+            for (Node node : chain) {
+                System.out.printf("Node %s -> ", node.getId());
+            }
+            System.out.printf("\nPath length: %s\n", sPaths.shortestPathLength(dest));
 
-      // If no path exists, print a message saying so.
+        }
+      }
     }
 }
