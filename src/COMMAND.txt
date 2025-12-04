@@ -1,0 +1,1 @@
+`clear; javac *.java; java ShortestPaths basic ./data/Simple2.txt D`

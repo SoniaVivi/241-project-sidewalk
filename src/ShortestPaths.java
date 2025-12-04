@@ -23,6 +23,12 @@ public class ShortestPaths {
     // paths computation:
     private HashMap<Node,PathData> paths;
 
+    public void printReachable() {
+        for (Node node : paths.keySet()) {
+            System.out.printf("\nNode %s | Length: %s\n", node.getId(), shortestPathLength(node));
+        }
+    }
+
     /** Compute the shortest path to all nodes from origin using Dijkstra's
      * algorithm. Fill in the paths field, which associates each Node with its
      * PathData record, storing total distance from the source, and the
@@ -46,8 +52,8 @@ public class ShortestPaths {
             HashMap<Node, Double> neighbors = current.getNeighbors();
 
             for (Node x : neighbors.keySet()) {
+                double temp = paths.get(current).distance + neighbors.get(x);
                 if (paths.containsKey(x)) {
-                    double temp = paths.get(current).distance + neighbors.get(x);
 
                     if (temp < paths.get(x).distance) {
                         paths.put(x, new PathData(temp, current));
@@ -55,7 +61,7 @@ public class ShortestPaths {
                     continue;
                 }
                 else {
-                    paths.put(x, new PathData(neighbors.get(x), current));
+                    paths.put(x, new PathData(temp, current));
                     pQueue.add(x);
                 }
             }
@@ -160,9 +166,7 @@ public class ShortestPaths {
       Node origin = graph.getNode(SidewalkOrigCode);
       sPaths.compute(origin);
       if (SidewalkDestCode == null) {
-      // TODO 5:
-      // If destCode was not given, print each reachable node followed by the
-      // length of the shortest path to it from the origin.
+        sPaths.printReachable();
 
       } else {
         Node dest = graph.getNode(SidewalkDestCode);
@@ -173,9 +177,6 @@ public class ShortestPaths {
         System.out.printf("\nPath length: %s\n", sPaths.shortestPathLength(dest));
       }
 
-      // TODO 6:
-      // If destCode was given, print the nodes in the path from
-      // origCode to destCode, followed by the total path length
       // If no path exists, print a message saying so.
     }
 }
