@@ -53,12 +53,11 @@ public class ShortestPaths {
 
             for (Node x : neighbors.keySet()) {
                 double temp = paths.get(current).distance + neighbors.get(x);
-                if (paths.containsKey(x)) {
 
+                if (paths.containsKey(x)) {
                     if (temp < paths.get(x).distance) {
                         paths.put(x, new PathData(temp, current));
                     }
-                    continue;
                 }
                 else {
                     paths.put(x, new PathData(temp, current));
@@ -91,7 +90,7 @@ public class ShortestPaths {
         if (!paths.containsKey(destination)) {
             return null;
         }
-        
+
         Node current = destination;
         LinkedList<Node> path = new LinkedList<>();
 
@@ -141,46 +140,49 @@ public class ShortestPaths {
     }
 
     public static void main(String[] args) {
-      // read command line args
-      String fileType = args[0];
-      String fileName = args[1];
-      String SidewalkOrigCode = args[2];
+        // read command line args
+        String fileType = args[0];
+        String fileName = args[1];
+        String SidewalkOrigCode = args[2];
 
-      String SidewalkDestCode = null;
-      if (args.length == 4) {
+        String SidewalkDestCode = null;
+        if (args.length == 4) {
         SidewalkDestCode = args[3];
-      }
+        }
 
-      // parse a graph with the given type and filename
-      Graph graph;
-      try {
-          graph = parseGraph(fileType, fileName);
-      } catch (FileNotFoundException e) {
-          System.out.println("Could not open file " + fileName);
-          return;
-      }
-      graph.report();
+        // parse a graph with the given type and filename
+        Graph graph;
+        try {
+            graph = parseGraph(fileType, fileName);
+        } catch (FileNotFoundException e) {
+            System.out.println("Could not open file " + fileName);
+            return;
+        }
+        graph.report();
 
 
-      ShortestPaths sPaths = new ShortestPaths();
-      Node origin = graph.getNode(SidewalkOrigCode);
-      sPaths.compute(origin);
-      if (SidewalkDestCode == null) {
-        sPaths.printReachable();
+        ShortestPaths sPaths = new ShortestPaths();
+        Node origin = graph.getNode(SidewalkOrigCode);
+        sPaths.compute(origin);
+        if (SidewalkDestCode == null) {
+            sPaths.printReachable();
+            return;
+        }
 
-      } else {
         Node dest = graph.getNode(SidewalkDestCode);
-        System.out.println();
         LinkedList<Node> chain = sPaths.shortestPath(dest);
+
+        System.out.println();
         if (chain == null) {
             System.out.println("No path exists");
         } else {
+            System.out.printf("Path:");
             for (Node node : chain) {
-                System.out.printf("Node %s -> ", node.getId());
+                System.out.printf(" -> Node %s", node.getId());
             }
             System.out.printf("\nPath length: %s\n", sPaths.shortestPathLength(dest));
 
+
         }
-      }
     }
 }
